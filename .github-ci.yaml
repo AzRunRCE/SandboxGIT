@@ -1,0 +1,17 @@
+ services:
+    - name: mongo:4.4
+      alias: mongo
+  variables:
+    MONGO_INITDB_ROOT_USERNAME: "root"
+    MONGO_INITDB_ROOT_PASSWORD: "password"
+    MONGO_INITDB_DATABASE: itgaapisampledb
+  stage: test
+  tags:
+    - linuxdocker
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  script:
+    - export ASPNETCORE_ENVIRONMENT="Integration"
+    - export MONGODB_PASSWORD="password"
+    - export RABBITMQ_PASSWORD="bitnami"
+    - dotnet test ./Tests/Api.ImportStructure.IntegrationTests/Api.ImportStructure.IntegrationTests.csproj /p:CollectCoverage=true /p:Include=[Api.ImportStructure.IntegrationTests]*
+    
